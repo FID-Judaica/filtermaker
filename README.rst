@@ -58,7 +58,7 @@ false.
 
 .. code:: python
 
-  >>> line = fs.Filter('Ḳef u-Śimḥah') # ḳ isn't part of the standard!
+  >>> line = fs.Filter('Ḳef ṿe-Śimḥah') # ḳ isn't part of the standard!
   >>> line.has('trans chars')
   True
   >>> line.has('only trans_chars')
