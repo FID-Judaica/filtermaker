@@ -118,9 +118,9 @@ of the ``.haschars`` function to show how it works:
       return lambda line: any(c for c in line.data if c in charset)
 
 The wrapped function to take one object as input (of any type), and it
-should return a closure that takes the string to be checked as input and
-returns a bool. The returned function will take the object to be passed
-to the wrapped function as the first argument and the name of the test
-as the second argument.
+should return a closure that takes the ``Filter`` instance to be checked
+as input and returns a bool. The returned function will take the object
+to be passed to the wrapped function as the first argument and the name
+of the test as the second argument.
 
 .. .. code:: python
