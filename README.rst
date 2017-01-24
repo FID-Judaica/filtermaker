@@ -109,7 +109,7 @@ to be the ``Filter`` instance itself, which is a subclass of
 
 If you want to get very fancy, you can create an entire class of tests
 with the ``.registrar`` decorator. Here is the internal implementation
-of the ``.haschars`` decorator to show how it works:
+of the ``.haschars`` function to show how it works:
 
 .. code:: python
 
