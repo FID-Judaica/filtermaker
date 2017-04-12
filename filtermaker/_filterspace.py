@@ -19,6 +19,7 @@
 
 import unicodedata as ud
 import collections
+import re
 from functools import wraps
 
 _tests = {}
@@ -50,7 +51,6 @@ class Filter(collections.UserString):
         else:
             self.props = set()
 
-
     def has(self, *props):
         for prop in props:
             if prop in self.props:
@@ -81,4 +81,6 @@ def onlycharset(charset):
 
 @registrar
 def hasregex(regex):
+    if isinstance(regex, str):
+        regex = re.compile(regex)
     return lambda line: bool(regex.search(line.data))
