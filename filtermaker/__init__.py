@@ -30,10 +30,13 @@ for more info, consult:
 https://github.com/FID-Judaica/filtermaker
 """
 import importlib, sys
+
+
 def get_filterspace():
     try:
-        del sys.modules['_filtermaker']
+        del sys.modules["_filtermaker"]
     except KeyError:
         pass
     from . import _filterspace
+
     return _filterspace

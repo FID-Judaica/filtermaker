@@ -43,8 +43,8 @@ def registrar(func):
 
 class Filter(collections.UserString):
     def __init__(self, line, *props):
-        self.data = ud.normalize('NFC', line).lower()
-        if props == ['ALL']:
+        self.data = ud.normalize("NFC", line).lower()
+        if props == ["ALL"]:
             self.props = set(k for k, v in _tests.items() if v(self))
         elif props:
             self.props = set(p for p in props if _tests[p](self))
@@ -75,8 +75,9 @@ def hascluster(charset):
 
 @registrar
 def onlycharset(charset):
-    return lambda line: all(c in charset for c in line.data
-                            if ud.category(c)[0] == 'L')
+    return lambda line: all(
+        c in charset for c in line.data if ud.category(c)[0] == "L"
+    )
 
 
 @registrar
