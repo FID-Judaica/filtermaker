@@ -54,7 +54,7 @@ class Filter(collections.UserString):
     def has(self, *props):
         for prop in props:
             if prop in self.props:
-                pass
+                return True
             elif _tests[prop](self):
                 self.props.add(prop)
             else:
