@@ -22,23 +22,48 @@ import collections
 import re
 from functools import wraps
 
-_tests = {}
 
+class FilterSpace:
+    __slots__ = ("_tests",)
 
-def register(func, name=None):
-    if name:
-        func.__name__ = name
+    def __init__(self):
 
-    _tests[func.__name__] = func
-    return func
+        self._tests = {}
 
+    def register(func, name=None):
+        if name:
+            func.__name__ = name
 
-def registrar(func):
-    @wraps(func)
-    def wrapped(arg, name):
-        return register(func(arg), name)
+        self._tests[func.__name__] = func
+        return func
 
-    return wrapped
+    def registrar(func):
+        @wraps(func)
+        def wrapped(arg, name):
+            return register(func(arg), name)
+
+        return wrapped
+
+    def haschars(self, charset, name):
+        self.register(lambda line: any(c for c in line.data if c in charset), name)
+
+    def hascluster(self, charset, name):
+        self.register(
+            lambda line: any(True for clstr in charset if clstr in line.data), name
+        )
+
+    def onlycharset(self, charset, name):
+        self.register(
+            lambda line: all(
+                c in charset for c in line.data if ud.category(c)[0] == "L"
+            ),
+            name,
+        )
+
+    def hasregex(self, regex, name):
+        if isinstance(regex, str):
+            regex = re.compile(regex)
+        self.register(lambda line: bool(regex.search(line.data)), name)
 
 
 class Filter(collections.UserString):
@@ -63,27 +88,3 @@ class Filter(collections.UserString):
                 return False
 
         return True
-
-
-@registrar
-def haschars(charset):
-    return lambda line: any(c for c in line.data if c in charset)
-
-
-@registrar
-def hascluster(charset):
-    return lambda line: any(True for clstr in charset if clstr in line.data)
-
-
-@registrar
-def onlycharset(charset):
-    return lambda line: all(
-        c in charset for c in line.data if ud.category(c)[0] == "L"
-    )
-
-
-@registrar
-def hasregex(regex):
-    if isinstance(regex, str):
-        regex = re.compile(regex)
-    return lambda line: bool(regex.search(line.data))
